@@ -16,7 +16,8 @@ if __name__ == "__main__":
                        "trending_date", "thumbnail_link"], axis=1)
 
     # convert needed columns into ints if required
-    # num of tags from tags, comments/rating disabled, etc
+    
+    # convert tags to # of tags
     tag_counts = []
     for value in data["tags"]:
         tag_counts.append(value.count('|') + 1)
@@ -24,6 +25,7 @@ if __name__ == "__main__":
     data = data.drop("tags", axis=1)
     data["tags"] = tag_counts
 
+    # convert comments disabled to 0/1
     comments_disabled = []
     for value in data["comments_disabled"]:
         if value == "False":
@@ -34,7 +36,27 @@ if __name__ == "__main__":
     data = data.drop("comments_disabled", axis=1)
     data["comments_disabled"] = comments_disabled
 
-    
+    # convert ratings disabled to 0/1
+    ratings_disabled = []
+    for value in data["ratings_disabled"]:
+        if value == "False":
+            ratings_disabled.append(1)
+        else:
+            ratings_disabled.append(0)
+
+    data = data.drop("ratings_disabled", axis=1)
+    data["ratings_disabled"] = ratings_disabled
+
+    # convert description to length of desc
+    descriptions = []
+    for value in data["description"]:
+        if isinstance(value, str):
+            descriptions.append(len(value))
+        else:
+            descriptions.append(0)
+
+    data = data.drop("description", axis=1)
+    data["description"] = descriptions
 
     print(data.dtypes)
 
@@ -46,13 +68,13 @@ if __name__ == "__main__":
 
     
     # 80% training, 20% testing split
-    #X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size=0.80, random_state=1)
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size=0.80, random_state=1)
 
     # create model
-    #model = LinearRegression()
-    #model.fit(X_train, Y_train)
+    model = LinearRegression()
+    model.fit(X_train, Y_train)
 
     # use to predict view_count variable
-    #predict = model.predict(X_test)
+    predict = model.predict(X_test)
 
 
