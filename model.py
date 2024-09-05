@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib as mp
+import statsmodels.formula.api as st
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
@@ -76,5 +77,9 @@ if __name__ == "__main__":
 
     # use to predict view_count variable
     predict = model.predict(X_test)
+    print('predictions: ', predict)
+    print('intercept: ', model.intercept_)
+    print('coefficients: ', model.coef_)
+    print('score: ', model.score(X, Y))
 
 
